@@ -12,103 +12,82 @@
 </head>
 <body>
 
-<!-- ================= LOCK SCREEN ================= -->
-<div id="lock-screen">
-  <div class="petals-lock" aria-hidden="true"></div>
-  <div class="lock-card">
-    <div class="lock-heart">
-      <svg viewBox="0 0 32 29" width="34" height="34" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M16 28.5C16 28.5 1.5 19.8 1.5 9.9C1.5 4.9 5.4 1 10.3 1C13 1 15.2 2.3 16 4.3C16.8 2.3 19 1 21.7 1C26.6 1 30.5 4.9 30.5 9.9C30.5 19.8 16 28.5 16 28.5Z" stroke="currentColor" stroke-width="1.6"/>
-      </svg>
-    </div>
-    <p class="lock-eyebrow">this page is just for you</p>
-    <h1 class="lock-title">Enter our little secret</h1>
-    <p class="lock-hint">You know the code.</p>
-    <form id="lock-form" autocomplete="off">
-      <input type="password" id="lock-input" inputmode="numeric" placeholder="dots" maxlength="12" aria-label="Passcode">
-      <button type="submit">Unlock</button>
-    </form>
-    <p id="lock-error">that's not quite it, try again</p>
-  </div>
+<!-- ================= MAIN SITE ================= -->
+<main id="site">
+
+<div class="petals" aria-hidden="true"></div>
+
+<!-- HERO -->
+<section class="hero">
+<p class="eyebrow reveal">a small website, for one person</p>
+<h1 class="hero-title reveal">
+Every version of my day<br> is better <em>with you</em> in it.
+</h1>
+<div class="hero-photo reveal">
+<img src="images/photo1.jpg" alt="Her, with her dog" loading="eager">
+</div>
+<p class="hero-sub reveal">you and your favorite little shadow, scroll for the rest</p>
+</section>
+
+<!-- NOTE -->
+<section class="note">
+<p class="eyebrow reveal">a note</p>
+<p class="note-text reveal">
+I'm not always great at saying this out loud, so I built you a page instead.
+You make ordinary days feel like they're worth remembering, the boring errands,
+the late-night calls, the arguments over what to eat. All of it, better, because
+it's with you. <span class="script">This one's for you.</span>
+</p>
+</section>
+
+<!-- GALLERY -->
+<section class="gallery">
+<p class="eyebrow reveal">us, so far</p>
+<h2 class="section-title reveal">A few of my favorites</h2>
+<div class="grid">
+<div class="grid-item reveal"><img src="images/photo2.jpg" loading="lazy" alt=""></div>
+<div class="grid-item reveal"><img src="images/photo3.jpg" loading="lazy" alt=""></div>
+<div class="grid-item reveal"><img src="images/photo4.jpg" loading="lazy" alt=""></div>
+<div class="grid-item reveal"><img src="images/photo5.jpg" loading="lazy" alt=""></div>
+<div class="grid-item reveal"><img src="images/photo6.jpg" loading="lazy" alt=""></div>
+<div class="grid-item reveal"><img src="images/photo7.jpg" loading="lazy" alt=""></div>
+<div class="grid-item reveal"><img src="images/photo8.jpg" loading="lazy" alt=""></div>
+<div class="grid-item reveal"><img src="images/photo9.jpg" loading="lazy" alt=""></div>
+<div class="grid-item reveal"><img src="images/photo10.jpg" loading="lazy" alt=""></div>
+<div class="grid-item reveal"><img src="images/photo11.jpg" loading="lazy" alt=""></div>
+<div class="grid-item reveal"><img src="images/photo12.jpg" loading="lazy" alt=""></div>
+</div>
+</section>
+
+<!-- THE QUESTION -->
+<section class="ask">
+<div class="ask-inner">
+<p class="eyebrow reveal">okay, here's the real reason for this page</p>
+<h2 class="ask-title reveal">Will you be mine?</h2>
+<p class="ask-sub reveal">(yes, this is me asking properly)</p>
+
+<div class="ask-buttons reveal">
+<button id="btn-yes" class="btn-yes">Yes, obviously</button>
+<button id="btn-no" class="btn-no">No</button>
+</div>
 </div>
 
-<!-- ================= MAIN SITE ================= -->
-<main id="site" hidden>
+<!-- Celebration -->
+<div id="celebration" hidden>
+<div class="confetti-layer" id="confetti-layer" aria-hidden="true"></div>
+<div class="celebration-card">
+<p class="script big">I was hoping you'd say that.</p>
+<p class="celebration-sub">Best decision either of us made today.</p>
+</div>
+</div>
+</section>
 
-  <div class="petals" aria-hidden="true"></div>
-
-  <!-- HERO -->
-  <section class="hero">
-    <p class="eyebrow reveal">a small website, for one person</p>
-    <h1 class="hero-title reveal">
-      Every version of my day<br> is better <em>with you</em> in it.
-    </h1>
-    <div class="hero-photo reveal">
-      <img data-photo="photo1" alt="Her, with her dog" loading="eager">
-    </div>
-    <p class="hero-sub reveal">you and your favorite little shadow, scroll for the rest</p>
-  </section>
-
-  <!-- NOTE -->
-  <section class="note">
-    <p class="eyebrow reveal">a note</p>
-    <p class="note-text reveal">
-      I'm not always great at saying this out loud, so I built you a page instead.
-      You make ordinary days feel like they're worth remembering, the boring errands,
-      the late-night calls, the arguments over what to eat. All of it, better, because
-      it's with you. <span class="script">This one's for you.</span>
-    </p>
-  </section>
-
-  <!-- GALLERY -->
-  <section class="gallery">
-    <p class="eyebrow reveal">us, so far</p>
-    <h2 class="section-title reveal">A few of my favorites</h2>
-    <div class="grid">
-      <div class="grid-item reveal"><img data-photo="photo2" loading="lazy" alt=""></div>
-      <div class="grid-item reveal"><img data-photo="photo3" loading="lazy" alt=""></div>
-      <div class="grid-item reveal"><img data-photo="photo4" loading="lazy" alt=""></div>
-      <div class="grid-item reveal"><img data-photo="photo5" loading="lazy" alt=""></div>
-      <div class="grid-item reveal"><img data-photo="photo6" loading="lazy" alt=""></div>
-      <div class="grid-item reveal"><img data-photo="photo7" loading="lazy" alt=""></div>
-      <div class="grid-item reveal"><img data-photo="photo8" loading="lazy" alt=""></div>
-      <div class="grid-item reveal"><img data-photo="photo9" loading="lazy" alt=""></div>
-      <div class="grid-item reveal"><img data-photo="photo10" loading="lazy" alt=""></div>
-      <div class="grid-item reveal"><img data-photo="photo11" loading="lazy" alt=""></div>
-      <div class="grid-item reveal"><img data-photo="photo12" loading="lazy" alt=""></div>
-    </div>
-  </section>
-
-  <!-- THE QUESTION -->
-  <section class="ask">
-    <div class="ask-inner">
-      <p class="eyebrow reveal">okay, here's the real reason for this page</p>
-      <h2 class="ask-title reveal">Will you be mine?</h2>
-      <p class="ask-sub reveal">(yes, this is me asking properly)</p>
-
-      <div class="ask-buttons reveal">
-        <button id="btn-yes" class="btn-yes">Yes, obviously</button>
-        <button id="btn-no" class="btn-no">No</button>
-      </div>
-    </div>
-
-    <!-- Celebration -->
-    <div id="celebration" hidden>
-      <div class="confetti-layer" id="confetti-layer" aria-hidden="true"></div>
-      <div class="celebration-card">
-        <p class="script big">I was hoping you'd say that.</p>
-        <p class="celebration-sub">Best decision either of us made today.</p>
-      </div>
-    </div>
-  </section>
-
-  <footer class="site-footer">
-    <p>made with a little bit of code and a lot of you</p>
-  </footer>
+<footer class="site-footer">
+<p>made with a little bit of code and a lot of you</p>
+</footer>
 
 </main>
 
-<script src="data.js"></script>
 <script src="script.js"></script>
 </body>
 </html>

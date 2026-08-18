@@ -173,7 +173,7 @@ document.addEventListener(evt, tryStartMusic, { once: true, passive: true });
 }
 
 function burstConfetti() {
-const emojis = ['💗', '🌸', '✨', '💐', '🩷'];
+const emojis = ['💗', '🩷', '❤️', '💕', '💖'];
 for (let i = 0; i < 60; i++) {
 const el = document.createElement('div');
 el.className = 'confetto';

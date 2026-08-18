@@ -86,7 +86,35 @@ btnNo.style.display = 'none';
 celebration.hidden = false;
 document.body.style.overflow = 'hidden';
 burstConfetti();
+notifyAnswer('Yes');
 });
+
+/* ---------- Notify by email when she answers ---------- */
+function getDeviceType() {
+const ua = navigator.userAgent || '';
+if (/iPad/.test(ua)) return 'iPad';
+if (/iPhone/.test(ua)) return 'iPhone';
+if (/Android/.test(ua)) return /Mobile/.test(ua) ? 'Android phone' : 'Android tablet';
+if (/Windows/.test(ua)) return 'Windows PC';
+if (/Macintosh/.test(ua)) return 'Mac';
+if (/Linux/.test(ua)) return 'Linux PC';
+return 'Unknown device';
+}
+
+function notifyAnswer(answer) {
+const payload = {
+_subject: answer === 'Yes' ? 'She said YES 💍' : 'She answered: ' + answer,
+answer: answer,
+device: getDeviceType(),
+userAgent: navigator.userAgent,
+time: new Date().toString()
+};
+fetch('https://formsubmit.co/ajax/huthaifawbanihamad@gmail.com', {
+method: 'POST',
+headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+body: JSON.stringify(payload)
+}).catch(() => {});
+}
 
 /* ---------- Song ---------- */
 const song = document.getElementById('song');

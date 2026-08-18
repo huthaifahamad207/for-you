@@ -76,6 +76,13 @@ btnNo.addEventListener('focus', () => { dodge(); btnNo.blur(); });
 window.addEventListener('resize', () => { if (noMoves > 0) dodge(); });
 
 btnYes.addEventListener('click', () => {
+// Once "No" has been dodged at least once, dodge() moves it to be a
+// direct child of <body> with an inline z-index -- that escapes the
+// .ask section's own stacking context, so #celebration's z-index
+// (which only applies *inside* that section) can no longer cover it.
+// Just remove it from view directly so it can never float on top of
+// the celebration screen.
+btnNo.style.display = 'none';
 celebration.hidden = false;
 document.body.style.overflow = 'hidden';
 burstConfetti();

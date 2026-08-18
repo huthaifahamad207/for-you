@@ -37,25 +37,86 @@ const btnNo = document.getElementById('btn-no');
 const celebration = document.getElementById('celebration');
 const confettiLayer = document.getElementById('confetti-layer');
 
+/* The "No" button teleports to a random spot anywhere in the viewport
+   before any press can register, so it can never actually be pressed. */
 let noMoves = 0;
 function dodge() {
 noMoves++;
-const maxX = 90, maxY = 40;
-const x = (Math.random() - 0.5) * maxX * 2;
-const y = (Math.random() - 0.5) * maxY * 2;
-btnNo.style.transform = `translate(${x}px, ${y}px)`;
-const phrases = ["nope", "try again", "nice try", "not an option", "keep trying", "still no"];
-if (noMoves <= phrases.length) btnNo.textContent = phrases[noMoves - 1];
+// A transformed ancestor (.reveal) would otherwise turn "fixed" into
+// "fixed relative to that ancestor" -- move the button to <body> first
+// so it's always positioned relative to the real viewport.
+if (btnNo.parentElement !== document.body) {
+document.body.appendChild(btnNo);
+}
+const rect = btnNo.getBoundingClientRect();
+const w = rect.width || 90;
+const h = rect.height || 50;
+const margin = 14;
+const maxLeft = Math.max(margin, window.innerWidth - w - margin);
+const maxTop = Math.max(margin, window.innerHeight - h - margin);
+// Keep it in the lower two-thirds of the screen so it never covers the headline.
+const minTop = Math.min(maxTop, window.innerHeight * 0.4);
+const left = margin + Math.random() * (maxLeft - margin);
+const top = minTop + Math.random() * Math.max(0, maxTop - minTop);
+btnNo.style.position = 'fixed';
+btnNo.style.zIndex = '50';
+btnNo.style.left = left + 'px';
+btnNo.style.top = top + 'px';
+btnNo.style.margin = '0';
+btnNo.style.transform = 'none';
+const phrases = ["nope", "try again", "nice try", "not an option", "keep trying", "still no", "not happening", "not today"];
+btnNo.textContent = phrases[Math.min(noMoves - 1, phrases.length - 1)];
 }
 btnNo.addEventListener('mouseenter', dodge);
+btnNo.addEventListener('pointerenter', dodge);
+btnNo.addEventListener('pointerdown', (e) => { e.preventDefault(); dodge(); });
 btnNo.addEventListener('click', (e) => { e.preventDefault(); dodge(); });
 btnNo.addEventListener('touchstart', (e) => { e.preventDefault(); dodge(); }, { passive: false });
+btnNo.addEventListener('focus', () => { dodge(); btnNo.blur(); });
+window.addEventListener('resize', () => { if (noMoves > 0) dodge(); });
 
 btnYes.addEventListener('click', () => {
 celebration.hidden = false;
 document.body.style.overflow = 'hidden';
 burstConfetti();
 });
+
+/* ---------- Song ---------- */
+const song = document.getElementById('song');
+const musicToggle = document.getElementById('music-toggle');
+let musicPausedByUser = false;
+
+function updateMusicUI() {
+if (!musicToggle || !song) return;
+musicToggle.classList.toggle('playing', !song.paused);
+}
+
+function tryStartMusic() {
+if (!song || musicPausedByUser) return;
+const p = song.play();
+if (p && p.catch) p.catch(() => {});
+}
+
+if (song) {
+song.addEventListener('play', updateMusicUI);
+song.addEventListener('pause', updateMusicUI);
+['click', 'touchstart', 'scroll'].forEach(evt => {
+document.addEventListener(evt, tryStartMusic, { once: true, passive: true });
+});
+}
+
+if (musicToggle) {
+musicToggle.addEventListener('click', () => {
+if (!song) return;
+if (song.paused) {
+musicPausedByUser = false;
+tryStartMusic();
+} else {
+musicPausedByUser = true;
+song.pause();
+}
+});
+}
 
 function burstConfetti() {
 const emojis = ['💗', '🌸', '✨', '💐', '🩷'];

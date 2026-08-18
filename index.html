@@ -4,11 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <title>For You</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,500&family=Quicksand:wght@400;500;600;700&family=Caveat:wght@500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css?v=3">
 </head>
 <body>
 
@@ -23,15 +26,19 @@
 <script>
 /* Runs immediately, before script.js (and even before the rest of the
    page) has necessarily finished loading -- so a fast first tap on a
-   slow connection is never dropped on the floor. */
+   slow connection is never dropped on the floor.
+   Listens as broadly as possible: on the entry element itself AND on
+   the whole document in the CAPTURE phase, across every event type a
+   real tap/click could plausibly fire under -- so no overlapping
+   element, odd event target, or browser/device quirk can ever
+   swallow the very first tap. */
 (function(){
 var entry = document.getElementById('entry-screen');
 if (!entry) return;
 var opened = false;
-function openNow(e){
+function openNow(){
 if (opened) return;
 opened = true;
-if (e) e.preventDefault();
 var s = document.getElementById('song');
 if (s) {
 s.muted = false;
@@ -42,8 +49,10 @@ if (p && p.catch) p.catch(function(){});
 entry.classList.add('hidden');
 document.body.classList.remove('entry-locked');
 }
-entry.addEventListener('click', openNow);
-entry.addEventListener('touchend', openNow, { passive: false });
+['pointerdown','mousedown','touchstart','touchend','click','keydown'].forEach(function(evt){
+document.addEventListener(evt, openNow, { capture: true, passive: true });
+entry.addEventListener(evt, openNow, { passive: true });
+});
 window.__entryOpenedEarly = function(){ return opened; };
 })();
 </script>
@@ -54,7 +63,7 @@ window.__entryOpenedEarly = function(){ return opened; };
 <div class="petals" aria-hidden="true"></div>
 
 <audio id="song" preload="auto" loop playsinline>
-<source src="song.mp3" type="audio/mpeg">
+<source src="song.mp3?v=3" type="audio/mpeg">
 </audio>
 <button id="music-toggle" type="button" aria-label="Play music">
 <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true">
@@ -111,6 +120,6 @@ it's with you. <span class="script">This one's for you.</span>
 
 </main>
 
-<script src="script.js"></script>
+<script src="script.js?v=3"></script>
 </body>
 </html>

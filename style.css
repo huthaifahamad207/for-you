@@ -191,6 +191,17 @@ animation: pulse-music 1.6s ease-in-out infinite;
 0%,100%{ transform: scale(1); }
 50%{ transform: scale(1.08); }
 }
+/* Shown only if autoplay was blocked -- an obvious "tap me for sound" cue. */
+#music-toggle.needs-tap{
+border-color: var(--rose-deep);
+box-shadow: 0 0 0 0 rgba(203,90,128,0.55), 0 10px 24px -12px rgba(74,36,56,0.35);
+animation: glow-music 1.3s ease-in-out infinite;
+}
+@keyframes glow-music{
+0%{ box-shadow: 0 0 0 0 rgba(203,90,128,0.55); }
+70%{ box-shadow: 0 0 0 14px rgba(203,90,128,0); }
+100%{ box-shadow: 0 0 0 0 rgba(203,90,128,0); }
+}
 /* ============ Ask section ============ */
 .ask{
 position: relative; z-index: 2;

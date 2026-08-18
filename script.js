@@ -89,12 +89,38 @@ let musicPausedByUser = false;
 function updateMusicUI() {
 if (!musicToggle || !song) return;
 musicToggle.classList.toggle('playing', !song.paused);
+if (!song.paused) musicToggle.classList.remove('needs-tap');
 }
 
 function tryStartMusic() {
 if (!song || musicPausedByUser) return;
+song.muted = false;
+song.volume = 1;
 const p = song.play();
-if (p && p.catch) p.catch(() => {});
+if (p && p.catch) {
+p.catch((err) => {
+console.warn('Music autoplay was blocked, will retry on next tap:', err && err.message);
+armFallbackRetry();
+});
+}
+}
+
+/* If the very first play() attempt gets rejected (slow network, a browser
+   being extra strict, etc.) we don't just give up silently -- the next tap
+   or touch ANYWHERE on the page retries it, and the music button glows so
+   there's always an obvious manual way to start it. */
+let fallbackArmed = false;
+function armFallbackRetry() {
+if (fallbackArmed || !song) return;
+fallbackArmed = true;
+if (musicToggle) musicToggle.classList.add('needs-tap');
+const retry = () => {
+if (!song.paused) return;
+tryStartMusic();
+};
+['click', 'touchend', 'pointerdown'].forEach(evt => {
+document.addEventListener(evt, retry, { passive: true });
+});
 }
 
 if (song) {
@@ -126,6 +152,9 @@ entryScreen.classList.add('hidden');
 document.body.classList.remove('entry-locked');
 entryScreen.removeEventListener('click', openSite);
 entryScreen.removeEventListener('touchend', openSite);
+// Belt-and-suspenders: if play() silently never actually started
+// (no error thrown, but nothing playing either), arm the fallback too.
+setTimeout(() => { if (song && song.paused) armFallbackRetry(); }, 600);
 };
 entryScreen.addEventListener('click', openSite);
 entryScreen.addEventListener('touchend', openSite, { passive: false });

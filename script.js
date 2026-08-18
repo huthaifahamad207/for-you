@@ -100,9 +100,6 @@ if (p && p.catch) p.catch(() => {});
 if (song) {
 song.addEventListener('play', updateMusicUI);
 song.addEventListener('pause', updateMusicUI);
-['click', 'touchstart', 'scroll'].forEach(evt => {
-document.addEventListener(evt, tryStartMusic, { once: true, passive: true });
-});
 }
 
 if (musicToggle) {
@@ -115,6 +112,27 @@ tryStartMusic();
 musicPausedByUser = true;
 song.pause();
 }
+});
+}
+
+/* ---------- Entry screen: the tap that opens the page also starts the song ---------- */
+const entryScreen = document.getElementById('entry-screen');
+if (entryScreen) {
+document.body.classList.add('entry-locked');
+const openSite = (e) => {
+if (e) e.preventDefault();
+tryStartMusic();
+entryScreen.classList.add('hidden');
+document.body.classList.remove('entry-locked');
+entryScreen.removeEventListener('click', openSite);
+entryScreen.removeEventListener('touchend', openSite);
+};
+entryScreen.addEventListener('click', openSite);
+entryScreen.addEventListener('touchend', openSite, { passive: false });
+} else {
+// Fallback (no entry screen present): start on first interaction anywhere.
+['click', 'touchstart', 'scroll'].forEach(evt => {
+document.addEventListener(evt, tryStartMusic, { once: true, passive: true });
 });
 }
 

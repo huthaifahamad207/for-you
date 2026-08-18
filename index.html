@@ -20,13 +20,42 @@
 <p class="entry-text">tap to open</p>
 </div>
 </div>
+<script>
+/* Runs immediately, before script.js (and even before the rest of the
+   page) has necessarily finished loading -- so a fast first tap on a
+   slow connection is never dropped on the floor. */
+(function(){
+var entry = document.getElementById('entry-screen');
+if (!entry) return;
+var opened = false;
+function openNow(e){
+if (opened) return;
+opened = true;
+if (e) e.preventDefault();
+var s = document.getElementById('song');
+if (s) {
+s.muted = false;
+s.volume = 1;
+var p = s.play();
+if (p && p.catch) p.catch(function(){});
+}
+entry.classList.add('hidden');
+document.body.classList.remove('entry-locked');
+}
+entry.addEventListener('click', openNow);
+entry.addEventListener('touchend', openNow, { passive: false });
+window.__entryOpenedEarly = function(){ return opened; };
+})();
+</script>
 
 <!-- ================= MAIN SITE ================= -->
 <main id="site">
 
 <div class="petals" aria-hidden="true"></div>
 
-<audio id="song" src="song.mp3" preload="auto" loop></audio>
+<audio id="song" preload="auto" loop playsinline>
+<source src="song.mp3" type="audio/mpeg">
+</audio>
 <button id="music-toggle" type="button" aria-label="Play music">
 <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true">
 <path d="M9 18V5l12-2v13"/>
